@@ -1,6 +1,12 @@
 #!/bin/bash
 
-./fix-headings.sh
-./download-remote-files.sh
-./remove-marks.sh
-./tidy.sh
+
+set -euo pipefail
+
+# set basedir
+pwd="${BASH_SOURCE%/*}"
+
+$pwd/fix-headings.sh
+$pwd/download-remote-files.sh
+$pwd/remove-marks.sh
+$pwd/tidy.sh

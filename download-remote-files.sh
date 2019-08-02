@@ -1,9 +1,16 @@
 #!/bin/bash
 
+set -euo pipefail
+
 urls=$(find . -name '*.html' \
             -exec grep -iEo 'https?.+?\.(jpe?g|gif|svg|png)' {} \; | \
          sort | uniq)
 
+if [ -z $urls ]; then
+  exit
+fi
+
+>&2 echo "Fetching $(wc -l <<< "$urls") images"
 while read -r url; do
     curl -O "$url"
 
