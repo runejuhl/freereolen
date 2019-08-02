@@ -28,7 +28,7 @@ while true; do
     break
   fi
 
-  jq .Source tmp.json > "page${current_page}.html"
+  jq -r .Source tmp.json | dos2unix > "page${current_page}.html"
   current_page=$(( current_page + 1))
   sleep 0.5
 done
