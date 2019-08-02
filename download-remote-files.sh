@@ -3,10 +3,10 @@
 set -euo pipefail
 
 urls=$(find . -name '*.html' \
-            -exec grep -iEo 'https?.+?\.(jpe?g|gif|svg|png)' {} \; | \
+            -exec grep -iEo 'https?.+?\.(jpe?g|gif|svg|png|otf)' {} \; | \
          sort | uniq)
 
-if [ -z $urls ]; then
+if [ -z "$urls" ]; then
   exit
 fi
 
