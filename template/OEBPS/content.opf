@@ -1,157 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package version="2.0" unique-identifier="BookId" xmlns="http://www.idpf.org/2007/opf">
   <metadata xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/">
-    ${OPF_LANGUAGE}
-    ${OPF_TITLE}
-    ${OPF_DATE}
-    ${OPF_IDENTIFIER}
-    ${OPF_COVER_IMAGE}
+    ${HEADER}
     <dc:date opf:event="modification" xmlns:opf="http://www.idpf.org/2007/opf">2018-07-19</dc:date>
   </metadata>
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
-    <item id="image003.jpg" href="Images/image003.jpg" media-type="image/jpeg"/>
-    <item id="image004.jpg" href="Images/image004.jpg" media-type="image/jpeg"/>
-    <item id="chapter001.html" href="Text/chapter001.html" media-type="application/xhtml+xml"/>
-    <item id="image005.jpg" href="Images/image005.jpg" media-type="image/jpeg"/>
-    <item id="image006.jpg" href="Images/image006.jpg" media-type="image/jpeg"/>
-    <item id="image007.jpg" href="Images/image007.jpg" media-type="image/jpeg"/>
-    <item id="chapter002.html" href="Text/chapter002.html" media-type="application/xhtml+xml"/>
-    <item id="image008.jpg" href="Images/image008.jpg" media-type="image/jpeg"/>
-    <item id="image009.jpg" href="Images/image009.jpg" media-type="image/jpeg"/>
-    <item id="chapter003.html" href="Text/chapter003.html" media-type="application/xhtml+xml"/>
-    <item id="image010.jpg" href="Images/image010.jpg" media-type="image/jpeg"/>
-    <item id="image011.jpg" href="Images/image011.jpg" media-type="image/jpeg"/>
-    <item id="image012.jpg" href="Images/image012.jpg" media-type="image/jpeg"/>
-    <item id="chapter004.html" href="Text/chapter004.html" media-type="application/xhtml+xml"/>
-    <item id="image013.jpg" href="Images/image013.jpg" media-type="image/jpeg"/>
-    <item id="image014.jpg" href="Images/image014.jpg" media-type="image/jpeg"/>
-    <item id="image015.jpg" href="Images/image015.jpg" media-type="image/jpeg"/>
-    <item id="chapter005.html" href="Text/chapter005.html" media-type="application/xhtml+xml"/>
-    <item id="image016.jpg" href="Images/image016.jpg" media-type="image/jpeg"/>
-    <item id="image017.jpg" href="Images/image017.jpg" media-type="image/jpeg"/>
-    <item id="image018.jpg" href="Images/image018.jpg" media-type="image/jpeg"/>
-    <item id="image019.jpg" href="Images/image019.jpg" media-type="image/jpeg"/>
-    <item id="chapter006.html" href="Text/chapter006.html" media-type="application/xhtml+xml"/>
-    <item id="image020.jpg" href="Images/image020.jpg" media-type="image/jpeg"/>
-    <item id="image021.jpg" href="Images/image021.jpg" media-type="image/jpeg"/>
-    <item id="image022.jpg" href="Images/image022.jpg" media-type="image/jpeg"/>
-    <item id="image023.jpg" href="Images/image023.jpg" media-type="image/jpeg"/>
-    <item id="chapter007.html" href="Text/chapter007.html" media-type="application/xhtml+xml"/>
-    <item id="image024.jpg" href="Images/image024.jpg" media-type="image/jpeg"/>
-    <item id="image025.jpg" href="Images/image025.jpg" media-type="image/jpeg"/>
-    <item id="image026.jpg" href="Images/image026.jpg" media-type="image/jpeg"/>
-    <item id="chapter008.html" href="Text/chapter008.html" media-type="application/xhtml+xml"/>
-    <item id="image027.jpg" href="Images/image027.jpg" media-type="image/jpeg"/>
-    <item id="image028.jpg" href="Images/image028.jpg" media-type="image/jpeg"/>
-    <item id="image029.jpg" href="Images/image029.jpg" media-type="image/jpeg"/>
-    <item id="chapter009.html" href="Text/chapter009.html" media-type="application/xhtml+xml"/>
-    <item id="image030.jpg" href="Images/image030.jpg" media-type="image/jpeg"/>
-    <item id="image031.jpg" href="Images/image031.jpg" media-type="image/jpeg"/>
-    <item id="chapter010.html" href="Text/chapter010.html" media-type="application/xhtml+xml"/>
-    <item id="image032.jpg" href="Images/image032.jpg" media-type="image/jpeg"/>
-    <item id="image033.jpg" href="Images/image033.jpg" media-type="image/jpeg"/>
-    <item id="chapter011.html" href="Text/chapter011.html" media-type="application/xhtml+xml"/>
-    <item id="image034.jpg" href="Images/image034.jpg" media-type="image/jpeg"/>
-    <item id="image035.jpg" href="Images/image035.jpg" media-type="image/jpeg"/>
-    <item id="chapter012.html" href="Text/chapter012.html" media-type="application/xhtml+xml"/>
-    <item id="image036.jpg" href="Images/image036.jpg" media-type="image/jpeg"/>
-    <item id="image037.jpg" href="Images/image037.jpg" media-type="image/jpeg"/>
-    <item id="chapter013.html" href="Text/chapter013.html" media-type="application/xhtml+xml"/>
-    <item id="image038.jpg" href="Images/image038.jpg" media-type="image/jpeg"/>
-    <item id="image039.jpg" href="Images/image039.jpg" media-type="image/jpeg"/>
-    <item id="image040.jpg" href="Images/image040.jpg" media-type="image/jpeg"/>
-    <item id="image041.jpg" href="Images/image041.jpg" media-type="image/jpeg"/>
-    <item id="chapter014.html" href="Text/chapter014.html" media-type="application/xhtml+xml"/>
-    <item id="image042.jpg" href="Images/image042.jpg" media-type="image/jpeg"/>
-    <item id="image043.jpg" href="Images/image043.jpg" media-type="image/jpeg"/>
-    <item id="image044.jpg" href="Images/image044.jpg" media-type="image/jpeg"/>
-    <item id="image045.jpg" href="Images/image045.jpg" media-type="image/jpeg"/>
-    <item id="image046.jpg" href="Images/image046.jpg" media-type="image/jpeg"/>
-    <item id="image047.jpg" href="Images/image047.jpg" media-type="image/jpeg"/>
-    <item id="image048.jpg" href="Images/image048.jpg" media-type="image/jpeg"/>
-    <item id="image049.jpg" href="Images/image049.jpg" media-type="image/jpeg"/>
-    <item id="chapter015.html" href="Text/chapter015.html" media-type="application/xhtml+xml"/>
-    <item id="image001.jpg" href="Images/image001.jpg" media-type="image/jpeg"/>
-    <item id="forside.html" href="Text/forside.html" media-type="application/xhtml+xml"/>
-    <item id="i_samme_serie.html" href="Text/i_samme_serie.html" media-type="application/xhtml+xml"/>
-    <item id="image050.jpg" href="Images/image050.jpg" media-type="image/jpeg"/>
-    <item id="image051.jpg" href="Images/image051.jpg" media-type="image/jpeg"/>
-    <item id="image052.jpg" href="Images/image052.jpg" media-type="image/jpeg"/>
-    <item id="image053.jpg" href="Images/image053.jpg" media-type="image/jpeg"/>
-    <item id="image054.jpg" href="Images/image054.jpg" media-type="image/jpeg"/>
-    <item id="image055.jpg" href="Images/image055.jpg" media-type="image/jpeg"/>
-    <item id="image056.jpg" href="Images/image056.jpg" media-type="image/jpeg"/>
-    <item id="image057.jpg" href="Images/image057.jpg" media-type="image/jpeg"/>
-    <item id="image058.jpg" href="Images/image058.jpg" media-type="image/jpeg"/>
-    <item id="image059.jpg" href="Images/image059.jpg" media-type="image/jpeg"/>
-    <item id="image060.jpg" href="Images/image060.jpg" media-type="image/jpeg"/>
-    <item id="image061.jpg" href="Images/image061.jpg" media-type="image/jpeg"/>
-    <item id="image062.jpg" href="Images/image062.jpg" media-type="image/jpeg"/>
-    <item id="image063.jpg" href="Images/image063.jpg" media-type="image/jpeg"/>
-    <item id="image064.jpg" href="Images/image064.jpg" media-type="image/jpeg"/>
-    <item id="image065.jpg" href="Images/image065.jpg" media-type="image/jpeg"/>
-    <item id="image066.jpg" href="Images/image066.jpg" media-type="image/jpeg"/>
-    <item id="image067.jpg" href="Images/image067.jpg" media-type="image/jpeg"/>
-    <item id="image068.jpg" href="Images/image068.jpg" media-type="image/jpeg"/>
-    <item id="image069.jpg" href="Images/image069.jpg" media-type="image/jpeg"/>
-    <item id="image070.jpg" href="Images/image070.jpg" media-type="image/jpeg"/>
-    <item id="image071.jpg" href="Images/image071.jpg" media-type="image/jpeg"/>
-    <item id="image072.jpg" href="Images/image072.jpg" media-type="image/jpeg"/>
-    <item id="image073.jpg" href="Images/image073.jpg" media-type="image/jpeg"/>
-    <item id="image074.jpg" href="Images/image074.jpg" media-type="image/jpeg"/>
-    <item id="image075.jpg" href="Images/image075.jpg" media-type="image/jpeg"/>
-    <item id="image076.jpg" href="Images/image076.jpg" media-type="image/jpeg"/>
-    <item id="image077.jpg" href="Images/image077.jpg" media-type="image/jpeg"/>
-    <item id="image078.jpg" href="Images/image078.jpg" media-type="image/jpeg"/>
-    <item id="image079.jpg" href="Images/image079.jpg" media-type="image/jpeg"/>
-    <item id="image080.jpg" href="Images/image080.jpg" media-type="image/jpeg"/>
-    <item id="image081.jpg" href="Images/image081.jpg" media-type="image/jpeg"/>
-    <item id="image082.jpg" href="Images/image082.jpg" media-type="image/jpeg"/>
-    <item id="image083.jpg" href="Images/image083.jpg" media-type="image/jpeg"/>
-    <item id="image084.jpg" href="Images/image084.jpg" media-type="image/jpeg"/>
-    <item id="image085.jpg" href="Images/image085.jpg" media-type="image/jpeg"/>
-    <item id="image086.jpg" href="Images/image086.jpg" media-type="image/jpeg"/>
-    <item id="image087.jpg" href="Images/image087.jpg" media-type="image/jpeg"/>
-    <item id="image088.jpg" href="Images/image088.jpg" media-type="image/jpeg"/>
-    <item id="image089.jpg" href="Images/image089.jpg" media-type="image/jpeg"/>
-    <item id="image090.jpg" href="Images/image090.jpg" media-type="image/jpeg"/>
-    <item id="image091.jpg" href="Images/image091.jpg" media-type="image/jpeg"/>
-    <item id="image092.jpg" href="Images/image092.jpg" media-type="image/jpeg"/>
-    <item id="image093.jpg" href="Images/image093.jpg" media-type="image/jpeg"/>
-    <item id="image094.jpg" href="Images/image094.jpg" media-type="image/jpeg"/>
-    <item id="image095.jpg" href="Images/image095.jpg" media-type="image/jpeg"/>
-    <item id="image096.jpg" href="Images/image096.jpg" media-type="image/jpeg"/>
-    <item id="image097.jpg" href="Images/image097.jpg" media-type="image/jpeg"/>
-    <item id="kolofon.html" href="Text/kolofon.html" media-type="application/xhtml+xml"/>
-    <item id="title.html" href="Text/title.html" media-type="application/xhtml+xml"/>
+    ${MANIFEST}
   </manifest>
   <spine toc="ncx">
-    <itemref idref="forside.html"/>
-    <itemref idref="title.html"/>
-    <itemref idref="chapter001.html"/>
-    <itemref idref="chapter002.html"/>
-    <itemref idref="chapter003.html"/>
-    <itemref idref="chapter004.html"/>
-    <itemref idref="chapter005.html"/>
-    <itemref idref="chapter006.html"/>
-    <itemref idref="chapter007.html"/>
-    <itemref idref="chapter008.html"/>
-    <itemref idref="chapter009.html"/>
-    <itemref idref="chapter010.html"/>
-    <itemref idref="chapter011.html"/>
-    <itemref idref="chapter012.html"/>
-    <itemref idref="chapter013.html"/>
-    <itemref idref="chapter014.html"/>
-    <itemref idref="chapter015.html"/>
-    <itemref idref="i_samme_serie.html"/>
-    <itemref idref="kolofon.html"/>
+    ${SPINE_TOC}
   </spine>
-  <guide>
-    <reference type="cover" title="Cover" href="Text/forside.html"/>
-    <reference type="colophon" title="Colophon" href="Text/kolofon.html"/>
-    <reference type="title-page" title="Title Page" href="Text/title.html"/>
-  </guide>
+  ${GUIDE}
 </package>
 
 <!-- Local Variables: -->

@@ -4,6 +4,7 @@ set -euo pipefail
 
 export BOOK_URL="${1}"
 export TARGET_DIR="${2}"
+export OEBPS="${TARGET_DIR}/OEBPS"
 shift 2
 
 export REFETCH=0
@@ -16,3 +17,4 @@ rsync -Paq "template/" "${TARGET_DIR}/"
 "${pwd}/download-remote-files.sh"
 "${pwd}/remove-marks.sh"
 "${pwd}/tidy.sh"
+"${pwd}/assemble.sh"
