@@ -38,16 +38,16 @@ EOF
 
 read -rd TOC_DOCTITLE_TEMPLATE <<'EOF'
   <docTitle>
-    <text>${DOCTITLE_TITLE}</text>
+    <text>${OPF_TITLE}</text>
   </docTitle>
 EOF
 
 read -rd TOC_NAVPOINT_TEMPLATE <<'EOF'
-    <navPoint id="navPoint-${NAVPOINT_ID}" playOrder="${NAVPOINT_ID}">
+    <navPoint id="navPoint-${NAVPOINT_INDEX}" playOrder="${NAVPOINT_INDEX}">
       <navLabel>
-        <text>${NAVPOINT_LABEL}</text>
+        <text>${GUIDE_LINE_TEMPLATE_TITLE}</text>
       </navLabel>
-      <content src="${NAVPOINT_SRC}"/>
+      <content src="${GUIDE_LINE_TEMPLATE_HREF}"/>
     </navPoint>
 EOF
 
@@ -99,9 +99,11 @@ done < <(find "${TARGET_DIR}/OEBPS" | sort)
 export GUIDE_COVER_LINES='' \
        GUIDE_LINE_TEMPLATE_HREF \
        GUIDE_LINE_TEMPLATE_TITLE \
-       GUIDE_LINE_TEMPLATE_TYPE
+       GUIDE_LINE_TEMPLATE_TYPE \
+       TOC_NAVMAP_LINES=''
 
 declare -A GUIDE_TYPE_COUNT
+declare -xi NAVPOINT_INDEX=0
 # build the guide
 while read -r match; do
   [[ "${match}" =~ ^([^:]+):(.+)$ ]]
@@ -120,6 +122,11 @@ while read -r match; do
   fi
 
   GUIDE_COVER_LINES+="$(envsubst <<<"${GUIDE_LINE_TEMPLATE}")"
+
+  if [[ "${GUIDE_LINE_TEMPLATE_TYPE}" == 'chapter' ]]; then
+    _=$((NAVPOINT_INDEX++))
+    TOC_NAVMAP_LINES+="$(envsubst <<<"${TOC_NAVPOINT_TEMPLATE}")"
+  fi
 done < <( (cd "${OEBPS}" && grep -r -i epub:type | sort ) )
 
 # Broken epubs may use non-standard chapter markers
@@ -135,9 +142,14 @@ if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
     _=$((count++))
 
     GUIDE_COVER_LINES+="$(envsubst <<<"${GUIDE_LINE_TEMPLATE}")"
+
+    _=$((NAVPOINT_INDEX++))
+    TOC_NAVMAP_LINES+="$(envsubst <<<"${TOC_NAVPOINT_TEMPLATE}")"
   done < <( (cd "${OEBPS}" && grep -r -i '"chaptitle"' | sort ) )
 fi
 
 export GUIDE="$(envsubst <<<"${GUIDE_TEMPLATE}")"
+export TOC_DOCTITLE="$(envsubst <<<"${TOC_DOCTITLE_TEMPLATE}")"
 
 envsubst < template/OEBPS/content.opf > "${TARGET_DIR}/OEBPS/content.opf"
+envsubst < template/OEBPS/toc.ncx > "${TARGET_DIR}/OEBPS/toc.ncx"
