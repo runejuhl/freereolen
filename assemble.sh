@@ -29,6 +29,8 @@ export OPF_DATE="${OPF_DATE:-0000}" \
        OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<img [^>]+/>' | get_attr src)}" \
        OPF_LANGUAGE="${OPF_LANGUAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<html [^>]+>' | get_attr xml:lang)}"
 
+OUTPUT_FILE="${OUTPUT_DIR}/${OPF_TITLE}.epub"
+
 read -rd HEADER_TEMPLATE <<'EOF'
     <dc:language>${OPF_LANGUAGE}</dc:language>
     <dc:title>${OPF_TITLE}</dc:title>
@@ -86,6 +88,7 @@ export MANIFEST='' \
        MANIFEST_LINE_ID
 export SPINE_TOC=''
 
+# FIXME: outputs wrong HREF value
 while read -r MANIFEST_LINE_HREF; do
   MANIFEST_LINE_MEDIA_TYPE=$(file --brief --mime-type "${MANIFEST_LINE_HREF}")
   MANIFEST_LINE_ID=$(basename "${MANIFEST_LINE_HREF}")
@@ -95,7 +98,7 @@ while read -r MANIFEST_LINE_HREF; do
     SPINE_TOC+="$(envsubst <<<"${SPINE_TOC_TEMPLATE}")"
   fi
 
-done < <(find "${TARGET_DIR}/OEBPS" | sort)
+done < <(find "${OEBPS}" -type f | sort)
 export GUIDE_COVER_LINES='' \
        GUIDE_LINE_TEMPLATE_HREF \
        GUIDE_LINE_TEMPLATE_TITLE \
@@ -153,3 +156,7 @@ export TOC_DOCTITLE="$(envsubst <<<"${TOC_DOCTITLE_TEMPLATE}")"
 
 envsubst < template/OEBPS/content.opf > "${TARGET_DIR}/OEBPS/content.opf"
 envsubst < template/OEBPS/toc.ncx > "${TARGET_DIR}/OEBPS/toc.ncx"
+
+cd "${TARGET_DIR}"
+zip -X0 "${OUTPUT_FILE}" "mimetype"
+zip -Xr "${OUTPUT_FILE}" "META-INF/" "OEBPS/"

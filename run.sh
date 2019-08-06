@@ -4,6 +4,7 @@ set -euo pipefail
 
 export BOOK_URL="${1}"
 export TARGET_DIR="${2}"
+export OUTPUT_DIR="${PWD}"
 export OEBPS="${TARGET_DIR}/OEBPS"
 shift 2
 
