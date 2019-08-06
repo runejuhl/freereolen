@@ -4,5 +4,9 @@
 
 find . -iregex '.+?/.+\.x?html?' | \
   while read -r f; do
-    tidy -modify -quiet --tidy-mark 0 "$f"
+    tidy -modify \
+         -quiet \
+         --warn-proprietary-attributes no \
+         --tidy-mark 0 \
+         "$f"
   done
