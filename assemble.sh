@@ -96,7 +96,7 @@ while read -r MANIFEST_LINE_HREF; do
   fi
 
 done < <(find "${TARGET_DIR}/OEBPS" | sort)
-export GUIDE_COVER_LINES \
+export GUIDE_COVER_LINES='' \
        GUIDE_LINE_TEMPLATE_HREF \
        GUIDE_LINE_TEMPLATE_TITLE \
        GUIDE_LINE_TEMPLATE_TYPE
@@ -121,6 +121,22 @@ while read -r match; do
 
   GUIDE_COVER_LINES+="$(envsubst <<<"${GUIDE_LINE_TEMPLATE}")"
 done < <( (cd "${OEBPS}" && grep -r -i epub:type | sort ) )
+
+# Broken epubs may use non-standard chapter markers
+if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
+  while read -r match; do
+    [[ "${match}" =~ ^([^:]+):(.+)$ ]]
+    GUIDE_LINE_TEMPLATE_HREF="${BASH_REMATCH[1]}"
+    tag="${BASH_REMATCH[2]}"
+    GUIDE_LINE_TEMPLATE_TYPE=chapter
+    GUIDE_LINE_TEMPLATE_TITLE="$(echo "${tag}" | strip_tags)"
+
+    count=${GUIDE_TYPE_COUNT[${GUIDE_LINE_TEMPLATE_TYPE}]:-0}
+    _=$((count++))
+
+    GUIDE_COVER_LINES+="$(envsubst <<<"${GUIDE_LINE_TEMPLATE}")"
+  done < <( (cd "${OEBPS}" && grep -r -i '"chaptitle"' | sort ) )
+fi
 
 export GUIDE="$(envsubst <<<"${GUIDE_TEMPLATE}")"
 
