@@ -11,6 +11,7 @@ export OPF_DATE="${OPF_DATE:-0000}" \
        OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<img [^>]+/>' | get_attr src)}" \
        OPF_LANGUAGE="${OPF_LANGUAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<html [^>]+>' | get_attr xml:lang)}"
 
+# KLUDGE: Should use a temp dir and not take target folder as argument
 OUTPUT_FILE="${OUTPUT_DIR}/${OPF_TITLE}.epub"
 
 read -rd HEADER_TEMPLATE <<'EOF'
@@ -150,3 +151,5 @@ popd
 if [[ "${CLEAN}" != '0' ]]; then
   rm -rf "${TARGET_DIR}"
 fi
+
+echo "Wrote ${OUTPUT_FILE}"

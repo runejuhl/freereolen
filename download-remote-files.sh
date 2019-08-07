@@ -13,7 +13,7 @@ if [ -z "$urls" ]; then
   exit
 fi
 
->&2 echo "Fetching $(wc -l <<< "$urls") images"
+>&2 echo "Fetching $(wc -l <<< "$urls") remote files"
 while read -r url; do
     name="$(basename "$url")"
 
@@ -25,14 +25,14 @@ while read -r url; do
       name="Fonts/${name}"
     fi
 
-    target_file="${TARGET_DIR}/OEBPS/${name}"
+    target_file="${OEBPS}/${name}"
     if [[ "$REFETCH" -ne 1 && -f "${target_file}" ]]; then
       continue
     fi
 
     _download "${url}" "${target_file}"
 
-    find "${TARGET_DIR}/OEBPS/Text/" -name '*.html' | while read -r f; do
+    find "${OEBPS}/Text/" -name '*.html' | while read -r f; do
       sed -ri "s#${url}#../${name}#g" "$f"
     done
 done <<< "$urls"
