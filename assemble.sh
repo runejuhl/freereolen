@@ -88,10 +88,10 @@ export MANIFEST='' \
        MANIFEST_LINE_ID
 export SPINE_TOC=''
 
-# FIXME: outputs wrong HREF value
-while read -r MANIFEST_LINE_HREF; do
-  MANIFEST_LINE_MEDIA_TYPE=$(file --brief --mime-type "${MANIFEST_LINE_HREF}")
-  MANIFEST_LINE_ID=$(basename "${MANIFEST_LINE_HREF}")
+while read -r f; do
+  MANIFEST_LINE_MEDIA_TYPE="$(file --brief --mime-type "${f}")"
+  MANIFEST_LINE_HREF="${f#${OEBPS}/}"
+  MANIFEST_LINE_ID="$(basename "${f}")"
   MANIFEST+="$(envsubst <<<"${MANIFEST_LINE_TEMPLATE}")"
 
   if [[ "${MANIFEST_LINE_HREF}" =~ \.html$ ]]; then
