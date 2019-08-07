@@ -5,7 +5,8 @@ set -euo pipefail
 # For case-insensitive regexes
 shopt -s nocasematch
 
-urls=$(find . -name '*.html' \
+urls=$(find "${OEBPS}/Text/" \
+            -name '*.html' \
             -exec grep -iEo 'https?.+?\.(jpe?g|gif|svg|png|otf)' {} \; | \
          sort | uniq)
 

@@ -1,19 +1,12 @@
 #!/bin/bash
 #
-# shellcheck disable=SC2155
+# shellcheck disable=SC2016,SC2034,SC2155
 
 set -euo pipefail
 
-first_page="${TARGET_DIR}/OEBPS/Text/section001.html"
-
-export OPF_DATE="${OPF_DATE:-0000}" \
-       OPF_TITLE="${OPF_TITLE:-$(get_title "${first_page}")}" \
-       OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<img [^>]+/>' | get_attr src)}" \
-       OPF_LANGUAGE="${OPF_LANGUAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<html [^>]+>' | get_attr xml:lang)}" \
-       OPF_BOOK_ID="$(grep -Eo 'https://streaming.pubhub.dk/StreamPackages/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}' "${first_page}" | awk -F/ '{print $NF}')"
-
-# KLUDGE: Should use a temp dir and not take target folder as argument
 OUTPUT_FILE="${OUTPUT_DIR}/${OPF_TITLE}.epub"
+
+export OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(basename "$(tr \\n ' ' <"${FIRST_PAGE}" | grep -Eo '<img [^>]+/>' | get_attr src)")}" \
 
 read -rd HEADER_TEMPLATE <<'EOF'
     <dc:language>${OPF_LANGUAGE}</dc:language>
@@ -58,9 +51,12 @@ read -rd GUIDE_LINE_TEMPLATE <<'EOF'
 EOF
 
 
-
+# We only want to use the following structure IDs for the content guide
+#
 # https://idpf.github.io/epub-vocabs/structure/
-_GUIDE_COVER_VOCABULARY=(cover frontmatter bodymatter backmatter volume part chapter subchapter division abstract foreword preface prologue introduction preamble conclusion epilogue afterword epigraph toc toc-brief landmarks loa loi lot lov appendix colophon credits keywords index index-headnotes index-legend index-group index-entry-list index-entry index-term index-editor-note index-locator index-locator-list index-locator-range index-xref-preferred index-xref-related index-term-category index-term-categories glossary glossterm glossdef bibliography biblioentry titlepage halftitlepage copyright-page seriespage acknowledgments imprint imprimatur contributors other-credits errata dedication revision-history case-study help marginalia notice pullquote sidebar tip warning halftitle fulltitle covertitle title subtitle label ordinal bridgehead learning-objective learning-objectives learning-outcome learning-outcomes learning-resource learning-resources learning-standard learning-standards answer answers assessment assessments feedback fill-in-the-blank-problem general-problem qna match-problem multiple-choice-problem practice question practices true-false-problem panel panel-group balloon text-area sound-area annotation note footnote endnote rearnote footnotes endnotes rearnotes annoref biblioref glossref noteref backlink credit keyword topic-sentence concluding-sentence pagebreak page-list table table-row table-cell list list-item figure aside)
+GUIDE_COVER_VOCABULARY='cover|frontmatter|bodymatter|backmatter|volume|part|chapter|subchapter|division|abstract|foreword|preface|prologue|introduction|preamble|conclusion|epilogue|afterword|epigraph|toc|toc-brief|landmarks|loa|loi|lot|lov|appendix|colophon|credits|keywords'
+# These are just here in case we need them in the future.
+_GUIDE_COVER_VOCABULARY_IGNORED=(index index-headnotes index-legend index-group index-entry-list index-entry index-term index-editor-note index-locator index-locator-list index-locator-range index-xref-preferred index-xref-related index-term-category index-term-categories glossary glossterm glossdef bibliography biblioentry titlepage halftitlepage copyright-page seriespage acknowledgments imprint imprimatur contributors other-credits errata dedication revision-history case-study help marginalia notice pullquote sidebar tip warning halftitle fulltitle covertitle title subtitle label ordinal bridgehead learning-objective learning-objectives learning-outcome learning-outcomes learning-resource learning-resources learning-standard learning-standards answer answers assessment assessments feedback fill-in-the-blank-problem general-problem qna match-problem multiple-choice-problem practice question practices true-false-problem panel panel-group balloon text-area sound-area annotation note footnote endnote rearnote footnotes endnotes rearnotes annoref biblioref glossref noteref backlink credit keyword topic-sentence concluding-sentence pagebreak page-list table table-row table-cell list list-item figure aside)
 
 GUIDE_COVER_TEMPLATE='<reference type="${GUIDE_COVER_TYPE}" title="${GUIDE_COVER_TITLE}" href="${GUIDE_COVER_HREF}"/>'
 
@@ -98,6 +94,10 @@ while read -r match; do
   GUIDE_LINE_TEMPLATE_HREF="${BASH_REMATCH[1]}"
   tag="${BASH_REMATCH[2]}"
   GUIDE_LINE_TEMPLATE_TYPE="$(echo "${tag}" | get_attr epub:type)"
+
+  if ! grep -E "${GUIDE_COVER_VOCABULARY}" <<< "${GUIDE_LINE_TEMPLATE_TYPE}"; then
+    continue
+  fi
 
   GUIDE_LINE_TEMPLATE_TITLE="$(get_title "${OEBPS}/${GUIDE_LINE_TEMPLATE_HREF}")"
   # if title is the same as the book title then we just use the name of the
