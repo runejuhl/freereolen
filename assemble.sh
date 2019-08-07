@@ -9,7 +9,8 @@ first_page="${TARGET_DIR}/OEBPS/Text/section001.html"
 export OPF_DATE="${OPF_DATE:-0000}" \
        OPF_TITLE="${OPF_TITLE:-$(get_title "${first_page}")}" \
        OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<img [^>]+/>' | get_attr src)}" \
-       OPF_LANGUAGE="${OPF_LANGUAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<html [^>]+>' | get_attr xml:lang)}"
+       OPF_LANGUAGE="${OPF_LANGUAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<html [^>]+>' | get_attr xml:lang)}" \
+       OPF_BOOK_ID="$(grep -Eo 'https://streaming.pubhub.dk/StreamPackages/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}' "${first_page}" | awk -F/ '{print $NF}')"
 
 # KLUDGE: Should use a temp dir and not take target folder as argument
 OUTPUT_FILE="${OUTPUT_DIR}/${OPF_TITLE}.epub"
@@ -18,7 +19,8 @@ read -rd HEADER_TEMPLATE <<'EOF'
     <dc:language>${OPF_LANGUAGE}</dc:language>
     <dc:title>${OPF_TITLE}</dc:title>
     <dc:date opf:event="publication">${OPF_DATE}</dc:date>
-    <meta name="cover" content="${OPF_COVER_IMAGE}" />
+    <meta name="cover" content="${OPF_COVER_IMAGE}" />
+    <dc:identifier opf:scheme="UUID" id="BookId">urn:uuid:${OPF_BOOK_ID}</dc:identifier>
 EOF
 
 read -rd TOC_DOCTITLE_TEMPLATE <<'EOF'
@@ -139,6 +141,7 @@ export TOC_DOCTITLE="$(envsubst <<<"${TOC_DOCTITLE_TEMPLATE}")"
 
 envsubst < template/OEBPS/content.opf > "${TARGET_DIR}/OEBPS/content.opf"
 envsubst < template/OEBPS/toc.ncx > "${TARGET_DIR}/OEBPS/toc.ncx"
+cp template/META-INF/container.xml "${TARGET_DIR}/META-INF/"
 
 pushd "${TARGET_DIR}"
 
