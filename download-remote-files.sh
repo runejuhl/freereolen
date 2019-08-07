@@ -15,8 +15,6 @@ fi
 
 >&2 echo "Fetching $(wc -l <<< "$urls") images"
 while read -r url; do
-    curl -O "$url"
-
     name="$(basename "$url")"
 
     if [[ "${name}" =~ (jpe?g|gif|svg|png)$ ]]; then
@@ -32,7 +30,7 @@ while read -r url; do
       continue
     fi
 
-    curl -o "${target_file}" "${url}"
+    _download "${url}" "${target_file}"
 
     find "${TARGET_DIR}/OEBPS/Text/" -name '*.html' | while read -r f; do
       sed -ri "s#${url}#../${name}#g" "$f"

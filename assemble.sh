@@ -6,24 +6,6 @@ set -euo pipefail
 
 first_page="${TARGET_DIR}/OEBPS/Text/section001.html"
 
-function strip_tags() {
-  sed -r 's#<[^>]+>([^<]+)</[^>]+>#\1#g'
-}
-
-function get_attr() {
-  attr="$1"
-
-  sed -r "s#.* ${attr}= *(('([^']+)')|(\"([^\"]+)\")).*#\\3\\5#"
-}
-
-function get_title() {
-  tr \\n ' ' <"${1}" | grep -Eo '<title>[^<]+</title>' | strip_tags
-}
-
-function wordify() {
-  echo "${1^}" | tr - ' '
-}
-
 export OPF_DATE="${OPF_DATE:-0000}" \
        OPF_TITLE="${OPF_TITLE:-$(get_title "${first_page}")}" \
        OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(tr \\n ' ' <"${first_page}" | grep -Eo '<img [^>]+/>' | get_attr src)}" \
@@ -157,6 +139,14 @@ export TOC_DOCTITLE="$(envsubst <<<"${TOC_DOCTITLE_TEMPLATE}")"
 envsubst < template/OEBPS/content.opf > "${TARGET_DIR}/OEBPS/content.opf"
 envsubst < template/OEBPS/toc.ncx > "${TARGET_DIR}/OEBPS/toc.ncx"
 
-cd "${TARGET_DIR}"
+pushd "${TARGET_DIR}"
+
+echo -n 'application/epub+zip' > mimetype
 zip -X0 "${OUTPUT_FILE}" "mimetype"
 zip -Xr "${OUTPUT_FILE}" "META-INF/" "OEBPS/"
+
+popd
+
+if [[ "${CLEAN}" != '0' ]]; then
+  rm -rf "${TARGET_DIR}"
+fi
