@@ -106,7 +106,7 @@ while read -r match; do
     count=${GUIDE_TYPE_COUNT[${GUIDE_LINE_TEMPLATE_TYPE}]:-0}
     _=$((count++))
     GUIDE_TYPE_COUNT["${GUIDE_LINE_TEMPLATE_TYPE}"]=$count
-    GUIDE_LINE_TEMPLATE_TITLE="$(wordify "${GUIDE_LINE_TEMPLATE_TYPE} ${count}")"
+    GUIDE_LINE_TEMPLATE_TITLE="$(wordify "${GUIDE_LINE_TEMPLATE_TYPE}") ${count}"
   fi
 
   GUIDE_COVER_LINES+="$(envsubst <<<"${GUIDE_LINE_TEMPLATE}")"

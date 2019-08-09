@@ -24,14 +24,14 @@ export CLEAN="${CLEAN:-1}" \
 
 mkdir -p "${TARGET_DIR}"/{META-INF,OEBPS/{,Fonts,Images,Text}}
 
-cwd="${BASH_SOURCE%/*}"
+export CWD="${BASH_SOURCE%/*}"
 
-. "${cwd}/common.sh"
+. "${CWD}/common.sh"
 
-. "${cwd}/get.sh"
-. "${cwd}/set-variables.sh"
-. "${cwd}/anonymize.sh"
-. "${cwd}/fix-headings.sh"
-. "${cwd}/download-remote-files.sh"
-. "${cwd}/tidy.sh"
-. "${cwd}/assemble.sh"
+. "${CWD}/get.sh"
+. "${CWD}/set-variables.sh"
+. "${CWD}/fix-headings.sh"
+. "${CWD}/download-remote-files.sh"
+. "${CWD}/anonymize.sh"
+. "${CWD}/tidy.sh"
+. "${CWD}/assemble.sh"

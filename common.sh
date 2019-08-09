@@ -21,7 +21,6 @@ function _download() {
   fi
 }
 
-
 function _download_json() {
   url="${1}"
   out="${2:-tmp.json}"
@@ -31,7 +30,6 @@ function _download_json() {
     exit 1
   fi
 }
-
 
 function strip_tags() {
   sed -r 's#<[^>]+>([^<]+)</[^>]+>#\1#g'
@@ -47,6 +45,18 @@ function get_title() {
   tr \\n ' ' <"${1}" | grep -Eo '<title>[^<]+</title>' | strip_tags
 }
 
+function get_translation() {
+  set +o nounset
+  word="${DICT[${1}]}"
+  set -o nounset
+  if [[ -z "${word}" ]]; then
+    word="${1}"
+  fi
+
+  echo -n "${word}"
+}
+
 function wordify() {
-  echo "${1^}" | tr - ' '
+  word="$(get_translation "${1}")"
+  echo "${word^}" | tr - ' '
 }
