@@ -48,7 +48,7 @@ read -rd MANIFEST_LINE_TEMPLATE <<'EOF'
 EOF
 
 read -rd SPINE_TOC_TEMPLATE <<'EOF'
-    <itemref idref="${MANIFEST_LINE_ID}"/>
+    <itemref idref="${GUIDE_LINE_TEMPLATE_BASENAME}"/>
 EOF
 
 read -rd GUIDE_TEMPLATE <<'EOF'
@@ -78,13 +78,10 @@ while read -r f; do
   MANIFEST_LINE_HREF="${f#${OEBPS}/}"
   MANIFEST_LINE_ID="$(basename "${f}")"
   MANIFEST+="$(envsubst <<<"${MANIFEST_LINE_TEMPLATE}")"
-
-  if [[ "${MANIFEST_LINE_HREF}" =~ \.html$ ]]; then
-    SPINE_TOC+="$(envsubst <<<"${SPINE_TOC_TEMPLATE}")"
-  fi
-
 done < <(find "${OEBPS}" -type f | sort)
+
 export GUIDE_COVER_LINES='' \
+       GUIDE_LINE_TEMPLATE_BASENAME \
        GUIDE_LINE_TEMPLATE_HREF \
        GUIDE_LINE_TEMPLATE_TITLE \
        GUIDE_LINE_TEMPLATE_TYPE \
@@ -94,8 +91,8 @@ declare -A GUIDE_TYPE_COUNT
 declare -xi NAVPOINT_INDEX=0
 
 # build the guide
+declare -i guide_done=0
 
-set -x
 # start by looking for epub spec markers
 if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
   while read -r match; do
@@ -127,27 +124,33 @@ if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
   done < <( (cd "${OEBPS}" && grep -r -i epub:type | sort ) )
 fi
 
-# if we don't have any markers we'll make do with the index
-if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
-
-  # start with just using the index
-  NAVPOINT_INDEX=1
-
-  until [[ $NAVPOINT_INDEX -eq $SECTION_COUNT ]]; do
-    file=$(_jq index.json ".[${NAVPOINT_INDEX}].Filename")
-    GUIDE_LINE_TEMPLATE_HREF="Text/${file}"
-    GUIDE_LINE_TEMPLATE_TITLE="$(_jq index.json ".[${NAVPOINT_INDEX}].Title")"
-    GUIDE_LINE_TEMPLATE_TYPE=$(deduce_type_from_filename "${file}")
-
-    GUIDE_COVER_LINES+="$(envsubst <<<"${GUIDE_LINE_TEMPLATE}")"
-    TOC_NAVMAP_LINES+="$(envsubst <<<"${TOC_NAVPOINT_TEMPLATE}")"
-
-    _=$((NAVPOINT_INDEX++))
-  done
-
+if [[ -n "${GUIDE_COVER_LINES}" ]]; then
+  guide_done=1
 fi
 
-set +x
+# if we don't have any markers we'll make do with the index
+# start with just using the index
+NAVPOINT_INDEX=1
+
+until [[ $NAVPOINT_INDEX -eq $SECTION_COUNT ]]; do
+
+  GUIDE_LINE_TEMPLATE_BASENAME=$(_jq index.json ".[${NAVPOINT_INDEX}].Filename")
+  GUIDE_LINE_TEMPLATE_HREF="Text/${GUIDE_LINE_TEMPLATE_BASENAME}"
+  GUIDE_LINE_TEMPLATE_TITLE="$(_jq index.json ".[${NAVPOINT_INDEX}].Title")"
+  GUIDE_LINE_TEMPLATE_TYPE=$(deduce_type_from_filename "${GUIDE_LINE_TEMPLATE_BASENAME}")
+
+  SPINE_TOC+="$(envsubst <<<"${SPINE_TOC_TEMPLATE}")"
+
+  if [[ $guide_done -eq 0 ]]; then
+    GUIDE_COVER_LINES+="$(envsubst <<<"${GUIDE_LINE_TEMPLATE}")"
+    TOC_NAVMAP_LINES+="$(envsubst <<<"${TOC_NAVPOINT_TEMPLATE}")"
+  fi
+  _=$((NAVPOINT_INDEX++))
+done
+
+if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
+  guide_done=1
+fi
 
 # Broken epubs may use non-standard chapter markers
 if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
