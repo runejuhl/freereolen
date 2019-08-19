@@ -15,6 +15,15 @@ export OPF_BOOK_ID_ORIGINAL="$(grep -Eo --max-count=1 'https://streaming.pubhub.
 
 export OPF_AUTHOR="${OPF_AUTHOR:-$(get_author)}"
 
+[[ ! "${OPF_DATE}" =~ ^[0-9]{4}(-[0-9]{2}-[0-9]{2})?$ ]] && \
+  error 10 'invalid date'
+
+[[ "${OPF_TITLE}" =~ \>\< ]] && \
+  error 11 'invalid title'
+
+[[ "${OPF_AUTHOR}" =~ \>\< ]] && \
+  error 11 'invalid author'
+
 # load dictionary for localized translations of markers
 i18n_dict="${CWD}/i18n/${OPF_LANGUAGE}.sh"
 if [[ -f "${i18n_dict}" ]]; then

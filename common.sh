@@ -13,6 +13,17 @@ declare -A GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP=(
   [copyright]='copyright-page'
 )
 
+function log() {
+  >&2 echo "$@"
+}
+
+function error() {
+  declare -i e="${1}"
+  shift
+  log "$@"
+  exit "${e}"
+}
+
 function _download() {
   url="${1}"
   out="${2:-}"
