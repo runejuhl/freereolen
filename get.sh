@@ -4,20 +4,23 @@ set -euo pipefail
 
 trimmed_book_url=$(echo "${BOOK_URL}" | sed -r 's#/[0-9]+/\?callback=.+##')
 
-declare -i current_section=1
-declare -i section_count=0
-while true; do
-  target_file="${TARGET_DIR}/OEBPS/Text/$(printf "section%03d.html" $current_section)"
+_download_json "${trimmed_book_url}/indexes/" index.json
 
-  if [[ ( "$REFETCH" == 1 || $section_count -eq 0 ) || ! -f "${target_file}" ]]; then
+declare -i current_section=1
+# shellcheck disable=SC2155
+{
+  declare -ix SECTION_COUNT=$(_jq index.json '.[-1].Index')
+  export FIRST_PAGE="${OEBPS}/Text/$(_jq index.json '.[1].Filename')"
+}
+
+while true; do
+  target_file="${OEBPS}/Text/$(_jq index.json ".[$current_section].Filename")"
+
+  if should_refetch || [[ ! -f "${target_file}" ]]; then
     >&2 echo "fetching section ${current_section}"
     _download_json "${trimmed_book_url}/${current_section}/"
 
-    if [[ $section_count -eq 0 ]]; then
-      section_count="$(jq -r .TotalIndexCount tmp.json)"
-    fi
-
-    if [[ $current_section -ge $section_count ]]; then
+    if [[ $current_section -ge $SECTION_COUNT ]]; then
       break
     fi
 
@@ -29,4 +32,6 @@ while true; do
   _=$(( current_section++ ))
 done
 
-rm -f tmp.json
+if should_clean; then
+  rm -f tmp.json
+fi

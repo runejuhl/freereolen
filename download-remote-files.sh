@@ -10,12 +10,9 @@ urls=$(find "${OEBPS}/Text/" \
             -exec grep -iEo 'https?.+?\.(jpe?g|gif|svg|png|otf)' {} \; | \
          sort | uniq)
 
-if [ -z "$urls" ]; then
-  exit
-fi
-
->&2 echo "Fetching $(wc -l <<< "$urls") remote files"
-while read -r url; do
+if [ -n "$urls" ]; then
+  >&2 echo "Fetching $(wc -l <<< "$urls") remote files"
+  while read -r url; do
     name="$(basename "$url")"
 
     if [[ "${name}" =~ (jpe?g|gif|svg|png)$ ]]; then
@@ -36,4 +33,5 @@ while read -r url; do
     find "${OEBPS}/Text/" -name '*.html' | while read -r f; do
       sed -ri "s#${url}#../${name}#g" "$f"
     done
-done <<< "$urls"
+  done <<< "$urls"
+fi

@@ -2,11 +2,23 @@
 
 set -euo pipefail
 
+# We only want to use the following structure IDs for the content guide
+#
+# https://idpf.github.io/epub-vocabs/structure/
+GUIDE_COVER_VOCABULARY='title|cover|frontmatter|bodymatter|backmatter|volume|part|chapter|subchapter|division|abstract|foreword|preface|prologue|introduction|preamble|conclusion|epilogue|afterword|epigraph|toc|toc-brief|landmarks|loa|loi|lot|lov|appendix|colophon|credits|keywords|copyright-page|copyright'
+# These are just here in case we need them in the future.
+_GUIDE_COVER_VOCABULARY_IGNORED=(index index-headnotes index-legend index-group index-entry-list index-entry index-term index-editor-note index-locator index-locator-list index-locator-range index-xref-preferred index-xref-related index-term-category index-term-categories glossary glossterm glossdef bibliography biblioentry titlepage halftitlepage copyright-page seriespage acknowledgments imprint imprimatur contributors other-credits errata dedication revision-history case-study help marginalia notice pullquote sidebar tip warning halftitle fulltitle covertitle subtitle label ordinal bridgehead learning-objective learning-objectives learning-outcome learning-outcomes learning-resource learning-resources learning-standard learning-standards answer answers assessment assessments feedback fill-in-the-blank-problem general-problem qna match-problem multiple-choice-problem practice question practices true-false-problem panel panel-group balloon text-area sound-area annotation note footnote endnote rearnote footnotes endnotes rearnotes annoref biblioref glossref noteref backlink credit keyword topic-sentence concluding-sentence pagebreak page-list table table-row table-cell list list-item figure aside)
+
+declare -A GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP=(
+  [copyright]='copyright-page'
+)
+
 function _download() {
   url="${1}"
   out="${2:-}"
 
   if ! curl \
+       --fail \
        -s "${url}" \
        -o "${out}" \
        -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36' \
@@ -84,4 +96,24 @@ function get_author() {
 function get_language() {
   page="${1}"
   tr \\n ' ' <"${page}" | grep -Eo '<html .*?xml:lang.*? [^>]+?>' | get_attr xml:lang || echo 'en'
+}
+
+function should_clean() {
+  [[ "${CLEAN}" != '0' ]]
+}
+
+function should_refetch() {
+  [[ "${REFETCH}" != '0' ]]
+}
+
+function _jq() {
+    jq -r "${2}" < "${1}"
+
+}
+
+function deduce_type_from_filename() {
+  type="$(grep -Eo "${GUIDE_COVER_VOCABULARY}" <<< "${1}")"
+
+  type="${GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP[$type]:-$type}"
+  echo "${type}"
 }
