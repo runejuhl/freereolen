@@ -6,8 +6,8 @@ set -euo pipefail
 shopt -s nocasematch
 
 urls=$(find "${OEBPS}/Text/" \
-            -name '*.html' \
-            -exec grep -iEo 'https?.+?\.(jpe?g|gif|svg|png|otf)' {} \; | \
+            -iregex '.*?\.x?html?' \
+            -exec grep -iEo "https?[^'\"]+?\\.(jpe?g|gif|svg|png|otf)" {} \; | \
          sort | uniq)
 
 if [ -n "$urls" ]; then
@@ -30,7 +30,9 @@ if [ -n "$urls" ]; then
 
     _download "${url}" "${target_file}"
 
-    find "${OEBPS}/Text/" -name '*.html' | while read -r f; do
+    find "${OEBPS}/Text/"\
+         -iregex '.*?\.x?html?' | \
+      while read -r f; do
       sed -ri "s#${url}#../${name}#g" "$f"
     done
   done <<< "$urls"

@@ -76,7 +76,7 @@ function wordify() {
 function get_author() {
   # Find a file that has the author tag
   file_line="$(grep -Eirn 'class="e?author"' "${OEBPS/Text}")"
-  if ! [[ "${file_line}" =~ ^([^:]+?\.html):([0-9]+): ]]; then
+  if ! [[ "${file_line}" =~ ^([^:]+?\.x?html?):([0-9]+): ]]; then
     return
   fi
   file="${BASH_REMATCH[1]}"
