@@ -4,7 +4,18 @@
 
 set -euo pipefail
 
-OUTPUT_FILE="${OUTPUT_DIR}/${OPF_TITLE}.epub"
+OUTPUT_FILE="${OUTPUT_DIR}/"
+
+if [[ -n "${OPF_AUTHOR}" ]]; then
+  OUTPUT_FILE+="${OPF_AUTHOR} - "
+fi
+
+OUTPUT_FILE+="${OPF_TITLE}"
+if [[ -n "${OPF_DATE}" && ! "${OPF_DATE}" =~ ^0+$ ]]; then
+  OUTPUT_FILE+=" (${OPF_DATE})"
+fi
+
+OUTPUT_FILE+='.epub'
 
 export OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(basename "$(tr \\n ' ' <"${FIRST_PAGE}" | grep -Eo '<img [^>]+/>' | get_attr src)")}" \
 
@@ -12,6 +23,7 @@ read -rd HEADER_TEMPLATE <<'EOF'
     <dc:language>${OPF_LANGUAGE}</dc:language>
     <dc:title>${OPF_TITLE}</dc:title>
     <dc:date opf:event="publication">${OPF_DATE}</dc:date>
+    <dc:creator id="creator01">${OPF_AUTHOR}</dc:creator>
     <meta name="cover" content="${OPF_COVER_IMAGE}" />
     <dc:identifier opf:scheme="UUID" id="BookId">urn:uuid:${OPF_BOOK_ID}</dc:identifier>
 EOF

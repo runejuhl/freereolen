@@ -60,3 +60,28 @@ function wordify() {
   word="$(get_translation "${1}")"
   echo "${word^}" | tr - ' '
 }
+
+function get_author() {
+  # Find a file that has the author tag
+  file_line="$(grep -Eirn 'class="e?author"' "${OEBPS/Text}")"
+  if ! [[ "${file_line}" =~ ^([^:]+?\.html):([0-9]+): ]]; then
+    return
+  fi
+  file="${BASH_REMATCH[1]}"
+  line="${BASH_REMATCH[2]}"
+
+  # Author name may be split over multiple lines, so we need to treat it
+  # carefully
+  file_content=$(tail -n "${line}" "${file}" | tr \\n ' ')
+
+  text="$(grep -Po '<[^ ]+ +class=.?e?author.?.*?</[^ ]+>' <<< "${file_content}")"
+  # turn line breaks into commas
+  text="$(sed -r 's#<br ?/?>#, #g' <<< "${text}")"
+
+  echo "$text" | strip_tags
+}
+
+function get_language() {
+  page="${1}"
+  tr \\n ' ' <"${page}" | grep -Eo '<html .*?xml:lang.*? [^>]+?>' | get_attr xml:lang || echo 'en'
+}
