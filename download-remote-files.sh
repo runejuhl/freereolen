@@ -24,11 +24,9 @@ if [ -n "$urls" ]; then
     fi
 
     target_file="${OEBPS}/${name}"
-    if [[ "$REFETCH" -ne 1 && -f "${target_file}" ]]; then
-      continue
+    if [[ ! -f "${target_file}" || "$REFETCH" -eq 1 ]]; then
+      _download "${url}" "${target_file}"
     fi
-
-    _download "${url}" "${target_file}"
 
     find "${OEBPS}/Text/"\
          -iregex '.*?\.x?html?' | \
