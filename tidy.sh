@@ -1,11 +1,11 @@
 #!/bin/bash -x
 
->&2 echo "Running tidy..."
+log "Running tidy..."
 
 set +o errexit
 
 while read -r f; do
-  >&2 echo "Tidying '${f}'..."
+  log "Tidying '${f}'..."
   tidy -modify \
        -quiet \
        --warn-proprietary-attributes no \
@@ -13,8 +13,7 @@ while read -r f; do
        "$f"
 
   if [[ $? -eq 2 ]]; then
-    >&2 echo "tidy choked on '${f}', exiting"
-    exit 2
+    error 2 "tidy choked on '${f}', exiting"
   fi
 done < <(find "${OEBPS}" -iregex '.+?/.+\.x?html?')
 

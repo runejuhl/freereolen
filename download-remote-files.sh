@@ -11,7 +11,7 @@ urls=$(find "${OEBPS}/Text/" \
          sort | uniq)
 
 if [ -n "$urls" ]; then
-  >&2 echo "Fetching $(wc -l <<< "$urls") remote files"
+  log "Fetching $(wc -l <<< "$urls") remote files"
   while read -r url; do
     name="$(basename "$url")"
 

@@ -190,4 +190,4 @@ if [[ "${CLEAN}" != '0' ]]; then
   rm -rf "${TARGET_DIR}"
 fi
 
-echo "Wrote ${OUTPUT_FILE}"
+log "Wrote ${OUTPUT_FILE}"

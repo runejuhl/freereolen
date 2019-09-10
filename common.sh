@@ -39,8 +39,7 @@ function _download() {
        -H 'DNT: 1' \
        -H 'Connection: keep-alive' \
        -H 'Referer: https://streaming.pubhub.dk/'; then
-    >&2 echo "An error occurred when fetching '${url}'"
-    exit 1
+    error 1 "An error occurred when fetching '${url}'"
   fi
 }
 
@@ -49,8 +48,7 @@ function _download_json() {
   out="${2:-tmp.json}"
 
   if ! _download "${url}" "${out}"; then
-    >&2 echo "An error occurred when fetching '${url}'"
-    exit 1
+    error 1 "An error occurred when fetching '${url}'"
   fi
 }
 

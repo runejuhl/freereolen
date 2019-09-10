@@ -17,7 +17,7 @@ while true; do
   target_file="${OEBPS}/Text/$(_jq index.json ".[$current_section].Filename")"
 
   if should_refetch || [[ ! -f "${target_file}" ]]; then
-    >&2 echo "fetching section ${current_section}"
+    log "fetching section ${current_section}"
     _download_json "${trimmed_book_url}/${current_section}/"
 
     if [[ $current_section -ge $SECTION_COUNT ]]; then
@@ -25,8 +25,7 @@ while true; do
     fi
 
     jq -r .Source tmp.json | dos2unix > "${target_file}"
-    >&2 echo "saved section ${current_section}"
-    sleep 0.5
+    log "saved section ${current_section}"
   fi
 
   _=$(( current_section++ ))
