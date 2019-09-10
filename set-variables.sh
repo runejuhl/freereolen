@@ -15,6 +15,18 @@ export OPF_BOOK_ID_ORIGINAL="$(grep -Eo --max-count=1 'https://streaming.pubhub.
 
 export OPF_AUTHOR="${OPF_AUTHOR:-$(get_author)}"
 
+while [[ -z "${OPF_AUTHOR}" ]]; do
+  read -r -e -p 'Author: ' OPF_AUTHOR
+done
+
+while [[ -z "${OPF_TITLE}" ]]; do
+  read -r -e -p 'Title: ' OPF_TITLE
+done
+
+while [[ -z "${OPF_DATE}" || "${OPF_DATE}" == '0000' ]]; do
+  read -r -e -p 'Date: ' OPF_DATE
+done
+
 [[ ! "${OPF_DATE}" =~ ^[0-9]{4}(-[0-9]{2}-[0-9]{2})?$ ]] && \
   error 10 'invalid date'
 
