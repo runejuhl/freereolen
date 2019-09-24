@@ -104,7 +104,7 @@ function get_author() {
 
 function get_language() {
   page="${1}"
-  tr \\n ' ' <"${page}" | grep -Eo '<html .*?xml:lang.*? [^>]+?>' | get_attr xml:lang || echo 'en'
+  tr \\n ' ' <"${page}" | grep -Eo '<html .*?xml:lang.*? [^>]+?>' | get_attr xml:lang
 }
 
 function should_clean() {

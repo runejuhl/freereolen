@@ -27,6 +27,10 @@ while [[ -z "${OPF_DATE}" || "${OPF_DATE}" == '0000' ]]; do
   read -r -e -p 'Date: ' OPF_DATE
 done
 
+while [[ -z "${OPF_LANGUAGE}" ]]; do
+  read -r -e -p 'Language code: ' OPF_LANGUAGE
+done
+
 [[ ! "${OPF_DATE}" =~ ^[0-9]{4}(-[0-9]{2}-[0-9]{2})?$ ]] && \
   error 10 'invalid date'
 
