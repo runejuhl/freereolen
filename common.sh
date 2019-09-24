@@ -120,9 +120,15 @@ function _jq() {
 
 }
 
-function deduce_type_from_filename() {
-  type="$(grep -Eo "${GUIDE_COVER_VOCABULARY}" <<< "${1}")"
+function lookup_type() {
+  key="${1}"
 
-  type="${GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP[$type]:-$type}"
+  type="$(grep -Eo "${GUIDE_COVER_VOCABULARY}" <<< "${key}")"
+
+  # Try non-standard vocabulary
+  if [[ -z "${type}" ]]; then
+    type="${GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP[$key]:-}"
+  fi
+
   echo "${type}"
 }

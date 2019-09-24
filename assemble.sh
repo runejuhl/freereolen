@@ -137,7 +137,35 @@ until [[ $NAVPOINT_INDEX -eq $SECTION_COUNT ]]; do
   GUIDE_LINE_TEMPLATE_BASENAME=$(_jq index.json ".[${NAVPOINT_INDEX}].Filename")
   GUIDE_LINE_TEMPLATE_HREF="Text/${GUIDE_LINE_TEMPLATE_BASENAME}"
   GUIDE_LINE_TEMPLATE_TITLE="$(_jq index.json ".[${NAVPOINT_INDEX}].Title")"
-  GUIDE_LINE_TEMPLATE_TYPE=$(deduce_type_from_filename "${GUIDE_LINE_TEMPLATE_BASENAME}")
+  GUIDE_LINE_TEMPLATE_TYPE=$(lookup_type "${GUIDE_LINE_TEMPLATE_BASENAME}")
+
+  if [[ -z "${GUIDE_LINE_TEMPLATE_TYPE}" ]]; then
+    # Try to use the HTML title header instead
+    GUIDE_LINE_TEMPLATE_TYPE=$(lookup_type "$(get_title "${OEBPS}/Text/${GUIDE_LINE_TEMPLATE_BASENAME}")")
+  fi
+
+  if [[ -z "${GUIDE_LINE_TEMPLATE_TYPE}" ]] && [[ -z "${GUIDE_LINE_TEMPLATE_TITLE}" ]]; then
+    # Both type and title are empty, that's surely a bad sign. Continue on!
+    _=$((NAVPOINT_INDEX++))
+    continue
+  fi
+
+  if [[ -z "${GUIDE_LINE_TEMPLATE_TYPE}" ]] && [[ -n "${GUIDE_LINE_TEMPLATE_TITLE}" ]]; then
+    # We have a title and nothing else. Let's hope that this really is a
+    # chapter...
+    GUIDE_LINE_TEMPLATE_TYPE='chapter'
+  fi
+
+  if [[ -z "${GUIDE_LINE_TEMPLATE_TITLE}" ]]; then
+    GUIDE_LINE_TEMPLATE_TITLE="$(wordify "${GUIDE_LINE_TEMPLATE_TYPE}")"
+  fi
+
+  set -x
+  # Let's prefix the type if the title is just numeric
+  if [[ "${GUIDE_LINE_TEMPLATE_TITLE}" =~ ^[0-9]+$ ]]; then
+    GUIDE_LINE_TEMPLATE_TITLE="$(wordify "${GUIDE_LINE_TEMPLATE_TYPE}") ${GUIDE_LINE_TEMPLATE_TITLE}"
+  fi
+  set +x
 
   SPINE_TOC+="$(envsubst <<<"${SPINE_TOC_TEMPLATE}")"
 
