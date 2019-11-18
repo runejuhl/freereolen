@@ -11,7 +11,8 @@ export OPF_DATE="${OPF_DATE:-0000}" \
 # Generate a stable UUID from the publication title
 export OPF_BOOK_ID="${OPF_BOOK_ID:-$(uuidgen -n @oid -N "${OPF_TITLE}" --sha1)}"
 
-export OPF_BOOK_ID_ORIGINAL="$(grep -Eo --max-count=1 'https://streaming.pubhub.dk/StreamPackages/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}' "${FIRST_PAGE}" | awk -F/ '{print $NF}')"
+# FIXME: is this correct, or is the ID actually the second regex?
+export OPF_BOOK_ID_ORIGINAL="${OPF_BOOK_ID_ORIGINAL:-$(grep -Eo --max-count=1 'https://streaming.pubhub.dk/StreamPackages/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}' "${FIRST_PAGE}" | awk -F/ '{print $NF}')}"
 
 export OPF_AUTHOR="${OPF_AUTHOR:-$(get_author)}"
 export OPF_LANGUAGE_SHORT
