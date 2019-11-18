@@ -7,7 +7,7 @@ declare -ix SECTION_COUNT
 
 trimmed_book_url=$(echo "${BOOK_URL}" | sed -r 's#/[0-9]+/\?callback=.+##')
 
-_download_json "${trimmed_book_url}/indexes/" "${JSON_INDEX_FILE}"
+_download "${trimmed_book_url}/indexes/" "${JSON_INDEX_FILE}"
 
 declare -i current_section=1
 SECTION_COUNT=$(_jq "${JSON_INDEX_FILE}" '.[-1].Index')
@@ -18,17 +18,13 @@ while true; do
 
   if should_refetch || [[ ! -f "${target_file}" ]]; then
     log "fetching section ${current_section}"
-    _download_json "${trimmed_book_url}/${current_section}/"
+    _download_js_json "${trimmed_book_url}/${current_section}/" "${target_file}"
+    log "saved section ${current_section} to '${target_file}'"
 
     if [[ $current_section -ge $SECTION_COUNT ]]; then
       break
     fi
-
-    jq -r .Source "${JSON_TMP_FILE}" | dos2unix > "${target_file}"
-    log "saved section ${current_section}"
   fi
 
   _=$(( current_section++ ))
 done
-
-rm -f "${JSON_TMP_FILE}"

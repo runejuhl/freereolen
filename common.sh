@@ -47,11 +47,10 @@ function _download() {
   fi
 }
 
-function _download_json() {
+function _download_js_json() {
   url="${1}"
-  out="${2:-${JSON_TMP_FILE}}}"
-
-  _download "${url}" "${out}"
+  out="${2}"
+  _download "${url}" - | jq -r .Source | dos2unix > "${out}"
 }
 
 function strip_tags() {
