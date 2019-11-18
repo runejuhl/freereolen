@@ -24,10 +24,12 @@ if [ -n "$urls" ]; then
     fi
 
     target_file="${OEBPS}/${name}"
-    if [[ ! -f "${target_file}" || "$REFETCH" -eq 1 ]]; then
+
+    if should_refetch || [[ ! -f "${target_file}" ]]; then
       _download "${url}" "${target_file}"
     fi
 
+    # Update all references
     find "${OEBPS}/Text/"\
          -iregex '.*?\.x?html?' | \
       while read -r f; do
