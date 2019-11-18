@@ -1,4 +1,6 @@
-#!/bin/bash -x
+#!/bin/bash
+
+set -euo pipefail
 
 log "Running tidy..."
 
@@ -15,6 +17,6 @@ while read -r f; do
   if [[ $? -eq 2 ]]; then
     error 2 "tidy choked on '${f}', exiting"
   fi
-done < <(find "${OEBPS}" -iregex '.+?/.+\.x?html?')
+done < <(find "${OEBPS}/Text/" -iregex '.+?/.+\.x?html?')
 
 set -o errexit
