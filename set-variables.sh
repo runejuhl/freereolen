@@ -14,34 +14,57 @@ export OPF_BOOK_ID="${OPF_BOOK_ID:-$(uuidgen -n @oid -N "${OPF_TITLE}" --sha1)}"
 export OPF_BOOK_ID_ORIGINAL="$(grep -Eo --max-count=1 'https://streaming.pubhub.dk/StreamPackages/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}' "${FIRST_PAGE}" | awk -F/ '{print $NF}')"
 
 export OPF_AUTHOR="${OPF_AUTHOR:-$(get_author)}"
+export OPF_LANGUAGE_SHORT
 
-while [[ -z "${OPF_AUTHOR}" ]]; do
-  read -r -e -p 'Author: ' OPF_AUTHOR
+while true; do
+  read -r -e -p 'Author: ' -i "${OPF_AUTHOR}" OPF_AUTHOR
+
+  if [[ ! "${OPF_AUTHOR}" =~ \>\< ]]; then
+    break
+  fi
+
+  log 'invalid author'
 done
 
-while [[ -z "${OPF_TITLE}" ]]; do
-  read -r -e -p 'Title: ' OPF_TITLE
+while true; do
+  read -r -e -p 'Title: ' -i "${OPF_TITLE}" OPF_TITLE
+
+  if [[ ! "${OPF_TITLE}" =~ \>\< ]]; then
+    break
+  fi
+
+  log 'invalid title'
 done
 
-while [[ -z "${OPF_DATE}" || "${OPF_DATE}" == '0000' ]]; do
-  read -r -e -p 'Date: ' OPF_DATE
+while true; do
+  read -r -e -p 'Date: ' -i "${OPF_DATE}" OPF_DATE
+
+  if [[ "${OPF_DATE}" =~ ^[0-9]{4}(-[0-9]{2}-[0-9]{2})?$ ]]; then
+    break
+  fi
+
+  log 'invalid date'
 done
 
-while [[ -z "${OPF_LANGUAGE}" ]]; do
-  read -r -e -p 'Language code: ' OPF_LANGUAGE
+while true; do
+  read -r -e -p 'Language code: ' -i "${OPF_LANGUAGE}" OPF_LANGUAGE
+
+  # Validation is hard! See https://github.com/w3c/epubcheck/issues/702,
+  # http://idpf.org/epub/30/spec/epub30-publications.html#elemdef-opf-dclanguage
+  # and https://github.com/w3c/epubcheck/issues/702
+  #
+  # We just check that the two first characters are lower-case characters;
+  # that's all we need to open the dict.
+  if [[ "${OPF_LANGUAGE}" =~ ^([a-z]{2}) ]]; then
+    OPF_LANGUAGE_SHORT="${BASH_REMATCH[1]}"
+    break
+  fi
+
+  log 'invalid language code'
 done
-
-[[ ! "${OPF_DATE}" =~ ^[0-9]{4}(-[0-9]{2}-[0-9]{2})?$ ]] && \
-  error 10 'invalid date'
-
-[[ "${OPF_TITLE}" =~ \>\< ]] && \
-  error 11 'invalid title'
-
-[[ "${OPF_AUTHOR}" =~ \>\< ]] && \
-  error 11 'invalid author'
 
 # load dictionary for localized translations of markers
-i18n_dict="${CWD}/i18n/${OPF_LANGUAGE}.sh"
+i18n_dict="${CWD}/i18n/${OPF_LANGUAGE_SHORT}.sh"
 if [[ -f "${i18n_dict}" ]]; then
   . "${i18n_dict}"
 fi
