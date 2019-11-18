@@ -54,6 +54,7 @@ export CLEAN="${CLEAN:-1}" \
 mkdir -p "${TARGET_DIR}"/{,META-INF,OEBPS/{,Fonts,Images,Text}}
 
 export JSON_INDEX_FILE="${TARGET_DIR}/index.json"
+export METADATA_FILE="${TARGET_DIR}/metadata.sh"
 
 . "${CWD}/get.sh"
 . "${CWD}/tidy.sh"

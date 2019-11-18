@@ -4,6 +4,12 @@
 
 set -euo pipefail
 
+if [[ -f "${METADATA_FILE}" ]]; then
+  set -a
+  . "${METADATA_FILE}"
+  set +a
+fi
+
 export OPF_DATE="${OPF_DATE:-0000}" \
        OPF_TITLE="${OPF_TITLE:-$(get_title "${FIRST_PAGE}")}" \
        OPF_LANGUAGE="${OPF_LANGUAGE:-$(get_language "${FIRST_PAGE}")}"
@@ -63,6 +69,17 @@ while true; do
 
   log 'invalid language code'
 done
+
+# TODO: Write metadata file to user dir
+cat > "${METADATA_FILE}" <<EOF
+OPF_BOOK_ID="${OPF_BOOK_ID}"
+OPF_BOOK_ID_ORIGINAL="${OPF_BOOK_ID_ORIGINAL}"
+OPF_DATE="${OPF_DATE}"
+OPF_TITLE="${OPF_TITLE}"
+OPF_LANGUAGE="${OPF_LANGUAGE}"
+OPF_LANGUAGE_SHORT="${OPF_LANGUAGE_SHORT}"
+OPF_AUTHOR="${OPF_AUTHOR}"
+EOF
 
 # load dictionary for localized translations of markers
 i18n_dict="${CWD}/i18n/${OPF_LANGUAGE_SHORT}.sh"
