@@ -134,9 +134,9 @@ NAVPOINT_INDEX=1
 
 until [[ $NAVPOINT_INDEX -eq $SECTION_COUNT ]]; do
 
-  GUIDE_LINE_TEMPLATE_BASENAME=$(_jq index.json ".[${NAVPOINT_INDEX}].Filename")
+  GUIDE_LINE_TEMPLATE_BASENAME=$(_jq "${JSON_INDEX_FILE}" ".[${NAVPOINT_INDEX}].Filename")
   GUIDE_LINE_TEMPLATE_HREF="Text/${GUIDE_LINE_TEMPLATE_BASENAME}"
-  GUIDE_LINE_TEMPLATE_TITLE="$(_jq index.json ".[${NAVPOINT_INDEX}].Title")"
+  GUIDE_LINE_TEMPLATE_TITLE="$(_jq "${JSON_INDEX_FILE}" ".[${NAVPOINT_INDEX}].Title")"
   GUIDE_LINE_TEMPLATE_TYPE=$(lookup_type "${GUIDE_LINE_TEMPLATE_BASENAME}")
 
   if [[ -z "${GUIDE_LINE_TEMPLATE_TYPE}" ]]; then
@@ -214,7 +214,7 @@ zip -Xr "${OUTPUT_FILE}" "META-INF/" "OEBPS/"
 
 popd
 
-if [[ "${CLEAN}" != '0' ]]; then
+if should_clean; then
   rm -rf "${TARGET_DIR}"
 fi
 

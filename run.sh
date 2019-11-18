@@ -43,8 +43,8 @@ export CWD="${BASH_SOURCE%/*}"
 . "${CWD}/common.sh"
 
 export BOOK_URL="${1}"
-export TMP="${TMP:-/tmp}"
-export TARGET_DIR="${TMP}/makeebook/$( (grep_uuids | last) <<< "${BOOK_URL}")"
+export TMP="${TMP:-/tmp/makeebook}"
+export TARGET_DIR="${TMP}/$( (grep_uuids | last) <<< "${BOOK_URL}")"
 export OUTPUT_DIR="${PWD}"
 export OEBPS="${TARGET_DIR}/OEBPS"
 
@@ -52,6 +52,9 @@ export CLEAN="${CLEAN:-1}" \
        REFETCH="${REFETCH:-0}"
 
 mkdir -p "${TARGET_DIR}"/{,META-INF,OEBPS/{,Fonts,Images,Text}}
+
+export JSON_INDEX_FILE="${TARGET_DIR}/index.json"
+export JSON_TMP_FILE="${TARGET_DIR}/tmp.json"
 
 . "${CWD}/get.sh"
 . "${CWD}/tidy.sh"
