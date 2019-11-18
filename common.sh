@@ -47,9 +47,7 @@ function _download_json() {
   url="${1}"
   out="${2:-${JSON_TMP_FILE}}}"
 
-  if ! _download "${url}" "${out}"; then
-    error 1 "An error occurred when fetching '${url}'"
-  fi
+  _download "${url}" "${out}"
 }
 
 function strip_tags() {
