@@ -39,22 +39,19 @@ if [[ $# -ne 1 ]]; then
   usage
 fi
 
-export BOOK_URL="${1}"
-TMPDIR="${TMPDIR:-/tmp}"
-export TARGET_DIR="${TMPDIR}/makeebook/$( (sha256sum | cut -d' ' -f1) <<< "${BOOK_URL}")"
-mkdir -p "${TARGET_DIR}"
+export CWD="${BASH_SOURCE%/*}"
+. "${CWD}/common.sh"
 
+export BOOK_URL="${1}"
+export TMP="${TMP:-/tmp}"
+export TARGET_DIR="${TMP}/makeebook/$( (grep_uuids | last) <<< "${BOOK_URL}")"
 export OUTPUT_DIR="${PWD}"
 export OEBPS="${TARGET_DIR}/OEBPS"
 
 export CLEAN="${CLEAN:-1}" \
        REFETCH="${REFETCH:-0}"
 
-mkdir -p "${TARGET_DIR}"/{META-INF,OEBPS/{,Fonts,Images,Text}}
-
-export CWD="${BASH_SOURCE%/*}"
-
-. "${CWD}/common.sh"
+mkdir -p "${TARGET_DIR}"/{,META-INF,OEBPS/{,Fonts,Images,Text}}
 
 . "${CWD}/get.sh"
 . "${CWD}/tidy.sh"

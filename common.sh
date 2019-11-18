@@ -132,3 +132,15 @@ function lookup_type() {
 
   echo "${type}"
 }
+
+function grep_uuids() {
+  grep -Eo '[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}'
+}
+
+function first() {
+  head -n1
+}
+
+function last() {
+  tail -n1
+}
