@@ -18,7 +18,7 @@ declare -A GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP=(
 )
 
 function log() {
-  >&2 echo "$@"
+  >&2 echo -e "$@"
 }
 
 function error() {
