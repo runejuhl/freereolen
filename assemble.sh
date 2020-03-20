@@ -101,7 +101,7 @@ if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
     tag="${BASH_REMATCH[2]}"
     GUIDE_LINE_TEMPLATE_TYPE="$(echo "${tag}" | get_attr epub:type)"
 
-    if ! grep -E "${GUIDE_COVER_VOCABULARY}" <<< "${GUIDE_LINE_TEMPLATE_TYPE}"; then
+    if ! GUIDE_LINE_TEMPLATE_TYPE="$( ( grep -Eo "${GUIDE_COVER_VOCABULARY}" | head -n1 ) <<< "${GUIDE_LINE_TEMPLATE_TYPE}")"; then
       continue
     fi
 
@@ -132,7 +132,7 @@ fi
 # start with just using the index
 NAVPOINT_INDEX=1
 
-until [[ $NAVPOINT_INDEX -eq $SECTION_COUNT ]]; do
+while [[ $NAVPOINT_INDEX -lt $SECTION_COUNT ]]; do
 
   GUIDE_LINE_TEMPLATE_BASENAME=$(_jq "${JSON_INDEX_FILE}" ".[${NAVPOINT_INDEX}].Filename")
   GUIDE_LINE_TEMPLATE_HREF="Text/${GUIDE_LINE_TEMPLATE_BASENAME}"
@@ -181,7 +181,7 @@ if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
 fi
 
 # Broken epubs may use non-standard chapter markers
-if [[ "${GUIDE_COVER_LINES}" == '' ]]; then
+if (( guide_done != 0 )) && [[ "${GUIDE_COVER_LINES}" == '' ]]; then
   while read -r match; do
     [[ "${match}" =~ ^([^:]+):(.+)$ ]]
     GUIDE_LINE_TEMPLATE_HREF="${BASH_REMATCH[1]}"
