@@ -5,7 +5,7 @@ set -euo pipefail
 # We only want to use the following structure IDs for the content guide
 #
 # https://idpf.github.io/epub-vocabs/structure/
-GUIDE_COVER_VOCABULARY='title|cover|frontmatter|bodymatter|backmatter|volume|part|chapter|subchapter|division|abstract|foreword|preface|prologue|introduction|preamble|conclusion|epilogue|afterword|epigraph|toc|toc-brief|landmarks|loa|loi|lot|lov|appendix|colophon|credits|keywords|copyright-page|copyright'
+GUIDE_COVER_VOCABULARY='title|cover|volume|part|chapter|subchapter|abstract|foreword|preface|prologue|introduction|preamble|conclusion|epilogue|afterword|epigraph|toc|toc-brief|landmarks|loa|loi|lot|lov|appendix|colophon|credits|keywords|copyright-page|copyright|frontmatter|bodymatter|backmatter|division'
 
 # shellcheck disable=SC2034
 {
