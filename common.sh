@@ -124,7 +124,7 @@ function _jq() {
 function lookup_type() {
   key="${1}"
 
-  type="$(grep -Eo "${GUIDE_COVER_VOCABULARY}" <<< "${key}")"
+  type="$( (grep -Eo "${GUIDE_COVER_VOCABULARY}" | head -n1) <<< "${key}")"
 
   # Try non-standard vocabulary
   if [[ -z "${type}" ]]; then
