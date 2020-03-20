@@ -1,0 +1,19 @@
+* freereolen
+Turn books from ereolen.dk into proper ePub files.
+** Usage
+See also help text:
+#+begin_src sh
+./run.sh
+#+end_src
+
++ borrow a book on [[https://www.ereolen.dk][ereolen.dk]]
++ open it for reading
++ open the Web Developer view and select the "Network" tab
++ apply filter so that only JavaScript is shown
++ browse to a new page
++ find a request whose URL matches
+  ~https://streaming.pubhub.dk/publicstreaming/v3/69f63101-9caf-40b9-a31e-b2fdb5642e3d/43c44150-9d2c-4506-8fe6-c0bb904ea563/1/?callback=jQuery11100348712123123213_123123121313&_=1231313123123~
+  (the important thing to look for is the last part of the URL before the query
+  string)
++ run the program with the URL as argument, e.g. ~./run.sh
+  'https://streaming.pubhub.dk/publicstreaming/v3/69f63101-9caf-40b9-a31e-b2fdb5642e3d/43c44150-9d2c-4506-8fe6-c0bb904ea563/1/?callback=jQuery11100348712123123213_123123121313&_=1231313123123'~
