@@ -23,7 +23,7 @@ export OPF_BOOK_ID_ORIGINAL="${OPF_BOOK_ID_ORIGINAL:-$(grep -Eo --max-count=1 'h
 export OPF_AUTHOR="${OPF_AUTHOR:-$(get_author)}"
 export OPF_LANGUAGE_SHORT
 
-while true; do
+while (( EDIT_METADATA == 1 )); do
   read -r -e -p 'Author: ' -i "${OPF_AUTHOR}" OPF_AUTHOR
 
   if [[ ! "${OPF_AUTHOR}" =~ \>\< ]]; then
@@ -33,7 +33,7 @@ while true; do
   log 'invalid author'
 done
 
-while true; do
+while (( EDIT_METADATA == 1 )); do
   read -r -e -p 'Title: ' -i "${OPF_TITLE}" OPF_TITLE
 
   if [[ ! "${OPF_TITLE}" =~ \>\< ]]; then
@@ -43,7 +43,7 @@ while true; do
   log 'invalid title'
 done
 
-while true; do
+while (( EDIT_METADATA == 1 )); do
   read -r -e -p 'Date: ' -i "${OPF_DATE}" OPF_DATE
 
   if [[ "${OPF_DATE}" =~ ^[0-9]{4}(-[0-9]{2}-[0-9]{2})?$ ]]; then
@@ -53,7 +53,7 @@ while true; do
   log 'invalid date'
 done
 
-while true; do
+while (( EDIT_METADATA == 1 )); do
   read -r -e -p 'Language code: ' -i "${OPF_LANGUAGE}" OPF_LANGUAGE
 
   # Validation is hard! See https://github.com/w3c/epubcheck/issues/702,

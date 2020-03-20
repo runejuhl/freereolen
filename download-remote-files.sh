@@ -10,7 +10,7 @@ urls=$(find "${OEBPS}/Text/" \
             -exec grep -iEo "https?[^'\"]+?\\.(jpe?g|gif|svg|png|otf)" {} \; | \
          sort | uniq)
 
-if [ -n "$urls" ]; then
+if (( DOWNLOAD == 1 )) && [ -n "$urls" ]; then
   log "Fetching $(wc -l <<< "$urls") remote files"
   while read -r url; do
     name="$(basename "$url")"

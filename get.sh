@@ -13,7 +13,7 @@ declare -i current_section=1
 SECTION_COUNT=$(_jq "${JSON_INDEX_FILE}" '.[-1].Index')
 FIRST_PAGE="${OEBPS}/Text/$(_jq "${JSON_INDEX_FILE}" '.[0].Filename')"
 
-while true; do
+while (( DOWNLOAD == 1 )); do
   target_file="${OEBPS}/Text/$(_jq "${JSON_INDEX_FILE}" ".[$((current_section-1))].Filename")"
 
   if should_refetch || [[ ! -f "${target_file}" ]]; then

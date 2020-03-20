@@ -48,8 +48,11 @@ export TARGET_DIR="${TMP}/$( (grep_uuids | last) <<< "${BOOK_URL}")"
 export OUTPUT_DIR="${PWD}"
 export OEBPS="${TARGET_DIR}/OEBPS"
 
-export CLEAN="${CLEAN:-1}" \
-       REFETCH="${REFETCH:-0}"
+declare -xi \
+        CLEAN="${CLEAN:-1}" \
+        REFETCH="${REFETCH:-0}" \
+        DOWNLOAD="${DOWNLOAD:-1}" \
+        EDIT_METADATA="${EDIT_METADATA:-1}"
 
 mkdir -p "${TARGET_DIR}"/{,META-INF,OEBPS/{,Fonts,Images,Text}}
 
