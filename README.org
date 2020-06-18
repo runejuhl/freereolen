@@ -1,5 +1,5 @@
 * freereolen
-Turn books from ereolen.dk into proper ePub files.
+Turn books from [[https://ereolen.dk][ereolen.dk]] into proper ePub files.
 ** Usage
 See also help text:
 #+begin_src sh
