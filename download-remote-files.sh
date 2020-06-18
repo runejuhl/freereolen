@@ -12,7 +12,10 @@ urls=$(find "${OEBPS}/Text/" \
 
 if (( DOWNLOAD == 1 )) && [ -n "$urls" ]; then
   log "Fetching $(wc -l <<< "$urls") remote files"
-  while read -r url; do
+  while read -r original_url; do
+    # replace HTML entities
+    url=${original_url//&amp;/&}
+
     name="$(basename "$url")"
 
     if [[ "${name}" =~ (jpe?g|gif|svg|png)$ ]]; then
@@ -33,7 +36,7 @@ if (( DOWNLOAD == 1 )) && [ -n "$urls" ]; then
     find "${OEBPS}/Text/"\
          -iregex '.*?\.x?html?' | \
       while read -r f; do
-      sed -ri "s#${url}#../${name}#g" "$f"
+      sed -ri "s#${original_url}#../${name}#g" "$f"
     done
   done <<< "$urls"
 fi
