@@ -11,6 +11,11 @@ if [[ -n "${OPF_BOOK_ID_ORIGINAL}" ]]; then
              sort | uniq)
 fi
 
+# Fix broken URL
+grep -l -rPo --include='**.htm' --include='**.html' --include='**.xhtml' '(?<=")http[^"]+www\.lindhardtogringhof\.dk(?=")' "${OEBPS}/Text/" | while read -r f; do
+  sed -ri 's@http[^"]+www\.lindhardtogringhof\.dk@https://www.lindhardtogringhof.dk@g' "${f}"
+done
+
 # Check for URLs that lead to external pages
 if urls=$(grep -rPo --include='**.htm' --include='**.html' --include='**.xhtml' '(?<=")http[^"]+(?=")' "${OEBPS}/Text/" | \
             grep -E --file=valid-urls.list --invert-match); then
