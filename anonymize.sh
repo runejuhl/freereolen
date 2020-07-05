@@ -12,7 +12,7 @@ if [[ -n "${OPF_BOOK_ID_ORIGINAL}" ]]; then
 fi
 
 # Fix broken URL
-grep -l -rPo --include='**.htm' --include='**.html' --include='**.xhtml' '(?<=")http[^"]+www\.lindhardtogringhof\.dk(?=")' "${OEBPS}/Text/" | while read -r f; do
+( grep -l -rPo --include='**.htm' --include='**.html' --include='**.xhtml' '(?<=")http[^"]+www\.lindhardtogringhof\.dk(?=")' "${OEBPS}/Text/" || true) | while read -r f; do
   sed -ri 's@http[^"]+www\.lindhardtogringhof\.dk@https://www.lindhardtogringhof.dk@g' "${f}"
 done
 
