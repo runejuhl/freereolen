@@ -22,6 +22,6 @@ while read -r f; do
   if [[ $? -eq 2 ]]; then
     error 2 "tidy choked on '${f}', exiting"
   fi
-done < <(find "${OEBPS}/Text/" -iregex '.+?/.+\.x?html?')
+done < <(find "${OEBPS}/Text/" -iregex '.+?/.+\.x?html?' | sort)
 
 set -o errexit
