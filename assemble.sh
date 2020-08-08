@@ -17,8 +17,6 @@ fi
 
 OUTPUT_FILE+='.epub'
 
-export OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-$(basename "$(tr \\n ' ' <"${FIRST_PAGE}" | grep -Eo '<img [^>]+/>' | get_attr src)")}" \
-
 read -rd HEADER_TEMPLATE <<'EOF'
     <dc:language>${OPF_LANGUAGE}</dc:language>
     <dc:title>${OPF_TITLE}</dc:title>

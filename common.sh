@@ -145,3 +145,7 @@ function first() {
 function last() {
   tail -n1
 }
+
+function get_cover_image_name() {
+  basename "$(tr \\n ' ' <"${FIRST_PAGE}" | grep -Eo '<img [^>]+/>' | get_attr src)"
+}
