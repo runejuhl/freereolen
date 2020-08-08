@@ -8,6 +8,11 @@ set +o errexit
 
 while read -r f; do
   log "Tidying '${f}'..."
+
+  # Join HTML tags that are split after `=`; this makes it a lot harder to
+  # search and replace
+  perl -i -0 -pe 's/=\n/=/gms' "${f}"
+
   tidy -modify \
        -quiet \
        --warn-proprietary-attributes no \
