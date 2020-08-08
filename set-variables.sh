@@ -15,6 +15,8 @@ export OPF_DATE="${OPF_DATE:-0000}" \
        OPF_LANGUAGE="${OPF_LANGUAGE:-$(get_language "${FIRST_PAGE}")}" \
        OPF_COVER_IMAGE="${OPF_COVER_IMAGE:-Images/$(get_cover_image_name)}"
 
+export OPF_BOOK_ISBN="${OPF_BOOK_ISBN:-$(get_book_isbn)}"
+
 # Generate a stable UUID from the publication title
 export OPF_BOOK_ID="${OPF_BOOK_ID:-$(uuidgen -n @oid -N "${OPF_TITLE}" --sha1)}"
 

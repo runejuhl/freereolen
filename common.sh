@@ -149,3 +149,7 @@ function last() {
 function get_cover_image_name() {
   basename "$(tr \\n ' ' <"${FIRST_PAGE}" | grep -Eo '<img [^>]+/>' | get_attr src)"
 }
+
+function get_book_isbn() {
+  grep -rPo --include='**.htm' --include='**.html' --include='**.xhtml' '<[^>]+?ekolofon-isbn..*?ISBN[^>]+>' "${OEBPS}/Text/" | strip_tags | grep -Eo '[0-9-]+{10,}'
+}

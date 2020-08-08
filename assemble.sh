@@ -23,6 +23,7 @@ read -rd HEADER_TEMPLATE <<'EOF'
     <dc:date opf:event="publication">${OPF_DATE}</dc:date>
     <dc:creator id="creator01">${OPF_AUTHOR}</dc:creator>
     <meta name="cover" content="${OPF_COVER_IMAGE}" />
+    <dc:identifier id="isbn-id">urn:isbn:${OPF_BOOK_ISBN}</dc:identifier>
     <dc:identifier opf:scheme="UUID" id="BookId">urn:uuid:${OPF_BOOK_ID}</dc:identifier>
 EOF
 
