@@ -1,5 +1,17 @@
 * freereolen
-Turn books from [[https://ereolen.dk][ereolen.dk]] into proper ePub files.
+Turn books from [[https://ereolen.dk][ereolen.dk]] into proper ePub files, to make it possible to read
+borrowed books with any ePub reader.
+
+Works by grabbing pages and resources using curl, doing a bit of magic and
+converting it all into an ePub using ~zip~ and ePub XML templates rendered with
+~bash~.
+
+** Features
++ automagically creates ToC even for (some) really broken books
++ i18n layer to translate ToC names into local languages
++ fetches external resources
++ lints HTML using ~tidy~
+
 ** Usage
 See also help text:
 #+begin_src sh
@@ -17,3 +29,16 @@ See also help text:
   string)
 + run the program with the URL as argument, e.g. ~./run.sh
   'https://streaming.pubhub.dk/publicstreaming/v3/69f63101-9caf-40b9-a31e-b2fdb5642e3d/43c44150-9d2c-4506-8fe6-c0bb904ea563/1/?callback=jQuery11100348712123123213_123123121313&_=1231313123123'~
+
+** Known bugs
++ doesn't work with all books, especially graphics-heavy ones (e.g. graphic
+  novels made from images and associated text)
++ will often choke (on purpose) on links to external sites, which will need to
+  be removed or whitelisted
+
+** Help wanted
++ CSS tidy
++ support for overdrive.com (as English language books are often only available
+  there)
++ support for automatically fetching books instead of having to manually go and
+  find the correct URL
