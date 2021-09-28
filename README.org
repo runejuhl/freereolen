@@ -14,6 +14,15 @@ converting it all into an ePub using ~zip~ and ePub XML templates rendered with
 + fetches external resources
 + lints HTML using ~tidy~
 
+** Dependencies
++ ~awk~
++ ~curl~
++ ~dos2unix~
++ ~grep~
+
++ ~sed~
++ ~tidy~
+
 ** Usage
 See also help text:
 #+begin_src sh
