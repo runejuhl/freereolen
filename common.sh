@@ -128,7 +128,7 @@ function lookup_type() {
 
   # Try non-standard vocabulary
   if [[ -z "${type}" ]]; then
-    type="${GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP[$key]:-}"
+    type="${GUIDE_COVER_VOCABULARY_NONSTANDARD_LOOKUP[${key,,}]:-}"
   fi
 
   echo "${type}"
