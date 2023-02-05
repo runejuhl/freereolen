@@ -1,4 +1,13 @@
 * freereolen
+
+** IMPORTANT NOTE
+
+The script currently doesn't work, as ereolen.dk has changed their site. The way
+it now works is by fetching a binary blob and decrypting it client-side. Reverse
+engineering shouldn't be too hard, but I haven't had time for a good look yet.
+
+** Purpose
+
 Turn books from [[https://ereolen.dk][ereolen.dk]] into proper ePub files, to make it possible to read
 borrowed books with any ePub reader. ePubs created with ~freereolen~ have been
 tested and found working in [[https://fbreader.org/][FBReader]] on Android and Linux, on a Barnes&Noble
